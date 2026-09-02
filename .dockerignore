@@ -1,0 +1,37 @@
+# Build context hygiene. Without this, the 7.5GB .venv and the ~500MB mined
+# package tree are uploaded to the daemon on every build.
+
+.venv/
+.hf/
+venv/
+env/
+
+datasets/
+!datasets/README.md
+.storage/
+
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+.git/
+.github/
+**/__pycache__/
+**/*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+*.md
+!README.md
+docs/
+infrastructure/terraform/
+tests/
+
+.env
+*.log
+wandb/
+mlruns/

@@ -1,0 +1,21 @@
+# Core ML
+torch>=2.2
+transformers>=4.44
+tokenizers>=0.19
+safetensors>=0.4
+numpy>=1.26
+
+# Parsing (decision D2)
+tree-sitter>=0.22
+tree-sitter-python>=0.21
+
+# Dataset labeling. Semgrep labels mined real code; Bandit is the benchmark
+# baseline and is deliberately never used for labeling (see data/mine.py).
+semgrep>=1.60
+bandit>=1.7
+
+# Baselines (proposal §10)
+scikit-learn>=1.4
+
+# Optional: experiment tracking
+# wandb>=0.17

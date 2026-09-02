@@ -1,0 +1,74 @@
+# Local development stack.
+#
+#   docker compose up            API + Postgres, in-process worker
+#   docker compose --profile queue up   adds Redis and a separate worker,
+#                                       matching the production topology
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: securescan
+      POSTGRES_PASSWORD: securescan
+      POSTGRES_DB: securescan
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U securescan"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    profiles: [queue]
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      SECURESCAN_ENVIRONMENT: development
+      SECURESCAN_DATABASE_URL: postgresql+psycopg://securescan:securescan@postgres:5432/securescan
+      SECURESCAN_REDIS_URL: ${SECURESCAN_REDIS_URL:-}
+      SECURESCAN_MODEL_DIR: /srv/artifacts/unixcoder-v1
+    ports: ["8000:8000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+    volumes:
+      - ./artifacts:/srv/artifacts:ro
+
+  worker:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/worker.Dockerfile
+    profiles: [queue]
+    environment:
+      SECURESCAN_ENVIRONMENT: development
+      SECURESCAN_DATABASE_URL: postgresql+psycopg://securescan:securescan@postgres:5432/securescan
+      SECURESCAN_REDIS_URL: redis://redis:6379/0
+      SECURESCAN_MODEL_DIR: /srv/artifacts/unixcoder-v1
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    volumes:
+      - ./artifacts:/srv/artifacts:ro
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports: ["3000:3000"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  pgdata:

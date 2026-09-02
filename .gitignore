@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Secrets and local state
+.env
+.storage/
+
+# Datasets and checkpoints live in S3, not git (proposal §6).
+datasets/**
+!datasets/README.md
+!datasets/.gitkeep
+artifacts/
+*.pt
+*.bin
+*.safetensors
+wandb/
+mlruns/
+
+# Node
+node_modules/
+.next/
+out/
+
+# OS / editor
+.DS_Store
+*.swp
+.vscode/
+.idea/
+*:Zone.Identifier
+
+# Local environment and caches created by the build pipeline
+.venv/
+.hf/
+datasets/_mined/
+datasets/*.stats.json

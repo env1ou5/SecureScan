@@ -1,0 +1,35 @@
+# API
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9    # multipart upload
+pydantic>=2.8
+pydantic-settings>=2.4
+email-validator>=2.2
+
+# Auth
+pyjwt>=2.9
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.0,<5.0
+
+# Persistence
+sqlalchemy>=2.0
+psycopg[binary]>=3.2
+alembic>=1.13
+
+# Queue (production; in-process ThreadPool is used when REDIS_URL is unset)
+redis>=5.0
+rq>=1.16
+
+# Storage
+boto3>=1.34
+
+# Inference. CPU wheel only -- serving never needs CUDA (proposal D4).
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.2,<3.0
+transformers>=4.44,<5.0
+tree-sitter>=0.22
+tree-sitter-python>=0.21
+numpy>=1.26
+
+# Migrations
+alembic>=1.13

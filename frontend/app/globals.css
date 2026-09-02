@@ -1,0 +1,59 @@
+:root {
+  --bg: #0f1117;
+  --surface: #171a23;
+  --border: #262b38;
+  --text: #e6e8ee;
+  --muted: #8b93a7;
+  --critical: #f04f4f;
+  --high: #f08a24;
+  --medium: #e0c341;
+  --low: #4a9de0;
+  --safe: #3fae72;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+code, pre {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.muted { color: var(--muted); }
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.badge-CRITICAL { background: rgba(240, 79, 79, 0.16); color: var(--critical); }
+.badge-HIGH     { background: rgba(240, 138, 36, 0.16); color: var(--high); }
+.badge-MEDIUM   { background: rgba(224, 195, 65, 0.16); color: var(--medium); }
+.badge-LOW      { background: rgba(74, 157, 224, 0.16); color: var(--low); }
+.badge-NONE     { background: rgba(63, 174, 114, 0.16); color: var(--safe); }
+
+.code-line { display: flex; gap: 1rem; white-space: pre; }
+.code-line .lineno { color: var(--muted); user-select: none; min-width: 3.5ch; text-align: right; }
+/* Attribution intensity. Opacity is bound to the normalized score, so a weak
+   attribution never looks like a confident one. */
+.code-line.attributed { background: rgba(240, 79, 79, calc(var(--score) * 0.28)); }

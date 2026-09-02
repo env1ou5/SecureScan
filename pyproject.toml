@@ -1,0 +1,31 @@
+[project]
+name = "securescan"
+version = "0.1.0"
+description = "AI-powered Python code vulnerability detection"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["frontend", "datasets", "artifacts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "C4"]
+# E501: long lines in docstrings and code templates are fine.
+# B008: `x = Depends(...)` is the FastAPI dependency-injection idiom, not a bug.
+# UP042: wants StrEnum; `str, Enum` is what Pydantic and SQLAlchemy expect here.
+# B905: zip(strict=) is noise on same-length sequences we construct ourselves.
+ignore = ["E501", "B008", "UP042", "B905"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+"ml/securescan_ml/data/synthetic.py" = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["backend", "ml"]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
